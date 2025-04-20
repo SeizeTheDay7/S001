@@ -1,9 +1,10 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, Resettable
 {
-    [SerializeField] private PlayerMove playerMove;
+    [SerializeField] GameObject deadSign;
+    GameManager gameManager;
     Vector2 startPos;
     Rigidbody2D rb;
 
@@ -11,6 +12,15 @@ public class Player : MonoBehaviour
     {
         startPos = transform.position;
         rb = GetComponent<Rigidbody2D>();
+        gameManager = GameManager.Instance;
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            gameManager.ResetAll();
+        }
     }
 
     void OnCollisionEnter2D(Collision2D collision)
@@ -21,13 +31,18 @@ public class Player : MonoBehaviour
 
     private void Die()
     {
-        transform.position = startPos;
-        rb.linearVelocity = Vector2.zero;
+        Instantiate(deadSign, transform.position, Quaternion.identity);
+        gameManager.ResetAll();
     }
 
     private void Exit()
     {
-        print("Exit");
-        // SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        // print("Exit");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
+
+    public void DoReset()
+    {
+        transform.position = startPos;
     }
 }

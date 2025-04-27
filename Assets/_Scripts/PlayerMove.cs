@@ -11,16 +11,17 @@ public class PlayerMove : MonoBehaviour, Resettable
     private Vector2 lastFramePos;
     private Vector2 slideVecSum;
     float minDragDistance = 0.1f;
-    private float refGravity;
+    [SerializeField] float fallMax = -25f;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        refGravity = rb.gravityScale;
     }
 
     void Update()
     {
+        rb.linearVelocity = new Vector2(rb.linearVelocity.x, Mathf.Max(rb.linearVelocity.y, fallMax)); // 아래로 향하는 속도를 -10으로 제한
+
         if (isBanned) return;
 
         // 마우스 버튼을 눌렀다면
@@ -62,6 +63,7 @@ public class PlayerMove : MonoBehaviour, Resettable
     {
         if (isClicking) // 클릭 중이라면 프레임 간 마우스 이동 변위만큼 힘을 더함
         {
+            frameDeltaPos /= Mathf.Pow(1.1f, frameDeltaPos.magnitude);
             rb.AddForce(frameDeltaPos * slideSpeed);
         }
     }

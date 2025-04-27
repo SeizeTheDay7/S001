@@ -8,10 +8,10 @@ public class Debug : MonoBehaviour
 
     void Update()
     {
-        bool isClicking = playerMove.isClicking;
-        string debug_1 = "isClicking : ";
-        debug_1 += isClicking ? "Clicking" : "Not Clicking";
+        // bool isClicking = playerMove.isClicking;
+        // string debug_1 = "isClicking : ";
+        // debug_1 += isClicking ? "Clicking" : "Not Clicking";
 
-        debugText.text = $"{debug_1}";
+        // debugText.text = $"{debug_1}";
     }
 }
